@@ -52,7 +52,3 @@ def find_good_input_differences(cipher_name :str, scenario :str, evoalg_name :st
         epsilon=epsilon,
     )
     return best_differences, highest_round
-
-
-if __name__ == "__main__":
-    find_good_input_differences("speck3264", "single-key", "evo", None)
