@@ -285,7 +285,12 @@ def optimize(
         df.to_csv(f"{log_file}_best_weighted_differences.csv")
     return diffs_as_hex, current_round
 
-def find_good_input_differences(cipher_name :str, scenario :str, evoalg_name :str, output_dir :str|None=None, epsilon :float=0.1) -> tuple[list[int], int]:
+def find_good_input_differences(
+        cipher_name :str,
+        scenario :str,
+        evoalg_name :str,
+        output_dir :str|None=None,
+        epsilon :float=0.1) -> tuple[list[int], int]:
     """
     Find good input differences for the differential-ML distinguisher.
     The function returns a list of differences and the highest round reached.
