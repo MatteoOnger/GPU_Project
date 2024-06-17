@@ -25,7 +25,6 @@ def bit_array_to_integers(arr :list[list[int]]) -> list[int]:
     packed = np.packbits(arr, axis=1)
     return [int.from_bytes(x.tobytes(), "big") for x in packed]
 
-
 def dataframe_from_sorted_differences(differences, scores, scenario, plain_bits, key_bits=0):
     idx = np.arange(len(differences))
     good = idx[np.argsort(scores)]
@@ -80,33 +79,46 @@ def pretty_print_best_n_differences(differences, scores, n, scenario, plain_bits
 
 
 def evaluate_multiple_differences(
-        candidate_differences,
-        plaintexts,
-        keys,
-        ciphertexts,
-        number_of_rounds,
-        plain_bits,
-        key_bits,
-        encrypt,
-        scenario="single-key",
-    ):
-    """Bias scores
-
+        candidate_differences :np.ndarray,
+        plaintexts :np.ndarray,
+        keys :np.ndarray,
+        ciphertexts :np.ndarray,
+        number_of_rounds :int,
+        plain_bits :int,
+        key_bits :int,
+        encrypt :callable,
+        scenario :str="single-key",
+    ) -> tuple[float]:
+    """
     Computes the bias scores of several candidate differences, based on the initial plaintexts,
     keys and the corresponding ciphertexts, for ``number_of_rounds`` rounds of a cipher with
     ``plain_bits`` plaintext bits and ``key_bits`` key bits.
 
-    :param candidate_differences:
-    :param plaintexts:
-    :param keys:
-    :param ciphertexts:
-    :param number_of_rounds: int, the number of rounds for the cipher
-    :param plain_bits: int, the number of plaintext bits
-    :param key_bits: int, the number of key bits
-    :param encrypt:
-    :param scenario: str, default to ``"single-key"``
-    :return:
-    :rtype:
+    Parameters
+    ----------
+    ``candidate_differences``: np.ndarray
+        Array of candidate differences.
+    ``plaintexts``: np.ndarray
+        Array of plaintexts used to compute the bias scores.
+    ``keys``: np.ndarray
+        Array of keys used to encrypt the plaintexts.
+    ``ciphertexts``: np.ndarray
+        Array of ciphertexts used to compute the bias scores.
+    ``number_of_rounds``: int
+        Number of rounds performed during encryption.
+    ``plain_bits``: int
+        Block size.
+    ``key_bits``: int
+        key size.
+    ``encrypt``: callable
+        Function used to encrypt the texts.
+    ``scenario``: string
+        If it is set to ``single-key``, the same key is used to encrypt both the inputs of a ciphertext pair;
+        while if it is set to ``related-key``, two different keys are used and their difference is considered too.
+
+    Return
+    ----------
+    Return a score for each candidate differences given in input.
     """
     dp = candidate_differences[:, :plain_bits]
     plaintexts_xor_differences = (
@@ -116,8 +128,7 @@ def evaluate_multiple_differences(
         ^ plaintexts
     ).reshape(-1, plain_bits)
     if scenario == "related-key":
-        #FIXME: candidate_differences[:, plain_bits:] 
-        dk = candidate_differences[:, key_bits:]
+        dk = candidate_differences[:, plain_bits:]
     else:
         dk = np.zeros((len(candidate_differences), key_bits), dtype=np.uint8)
     keys_xor_differences = (
