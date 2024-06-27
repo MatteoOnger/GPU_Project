@@ -9,6 +9,10 @@ import numpy as np
 from ciphers.utils import common
 
 
+WORD_SIZE = 32
+
+WORD_TYPE = np.uint32
+
 WORDSIZE_TO_ALPHABETA = {
     16: (7, 2),
     24: (8, 3),
