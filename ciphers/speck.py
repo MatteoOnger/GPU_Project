@@ -24,7 +24,7 @@ WORDSIZE_TO_ALPHABETA = {
 def get_keys_schedule(
         keys: np.ndarray,
         number_of_rounds: int,
-        word_size: int) -> np.ndarray:
+        word_size: int=WORD_SIZE) -> np.ndarray:
     """Return the whole key schedule for Speck.
 
     :param keys: The keys.
@@ -54,7 +54,7 @@ def get_keys_schedule(
 def encrypt_1round(
         plaintexts: np.ndarray,
         keys: np.ndarray,
-        word_size: int) -> None:
+        word_size: int=WORD_SIZE) -> None:
     """Encrypt one round using Speck.
 
     :param plaintexts: The plaintexts.
@@ -76,7 +76,7 @@ def encrypt_1round(
 def decrypt_1round(
         ciphertexts: np.ndarray,
         keys: np.ndarray,
-        word_size: int) -> None:
+        word_size: int=WORD_SIZE) -> None:
     """Decrypt one round using Speck.
 
     :param plaintexts: The ciphertexts.
@@ -99,7 +99,7 @@ def encrypt(
         plaintexts: np.ndarray,
         keys: np.ndarray,
         number_of_rounds: int,
-        word_size: int) -> None:
+        word_size: int=WORD_SIZE) -> None:
     """Encrypt using Speck.
 
     :param plaintexts: The plaintexts.
@@ -120,7 +120,7 @@ def decrypt(
         ciphertexts: np.ndarray,
         keys: np.ndarray,
         number_of_rounds: int,
-        word_size: int) -> None:
+        word_size: int=WORD_SIZE) -> None:
     """Decrypt using Speck.
 
     :param ciphertexts: The ciphertexts.
