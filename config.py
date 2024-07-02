@@ -28,8 +28,8 @@ class CipherParams():
   """
   name :str
   encrypt :callable
-  key_words :int
-  plain_words :int
+  key_size :int
+  plain_size :int
   word_size :int
   word_type :int
 
@@ -38,8 +38,8 @@ class CipherParams():
 class EvoalgParams():
   """
   """
-  name :str 
-  generate :callable
+  name :str
+  evolve :callable
 
 
 @dataclass
