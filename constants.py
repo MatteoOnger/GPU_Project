@@ -1,6 +1,10 @@
+"""
+"""
+
 from enum import Enum
 
 
+# ---------------------- CLASSES ---------------------------
 class Scenarios(Enum):
   """
   Enumeration of all the possible attack scenarios.
