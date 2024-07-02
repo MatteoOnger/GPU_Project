@@ -35,7 +35,7 @@ class CipherParams():
 
 
 @dataclass
-class EvoalgParmas():
+class EvoalgParams():
   """
   """
   name :str 
@@ -43,7 +43,7 @@ class EvoalgParmas():
 
 
 @dataclass
-class ScoringParmas():
+class ScoringParams():
   """
   """
   name :str 
