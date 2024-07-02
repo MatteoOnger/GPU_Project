@@ -27,7 +27,7 @@ class CipherParams():
   """
   """
   name :str
-  encrypt :callable
+  encryp_func :callable
   key_size :int
   plain_size :int
   word_size :int
@@ -39,7 +39,7 @@ class EvoalgParams():
   """
   """
   name :str
-  evolve :callable
+  evolve_func :callable
 
 
 @dataclass
@@ -47,4 +47,4 @@ class ScoringParams():
   """
   """
   name :str 
-  evaluate :callable
+  evaluate_func :callable
