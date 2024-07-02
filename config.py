@@ -27,7 +27,7 @@ class CipherParams():
   """
   """
   name :str
-  encryp_func :callable
+  encrypt_func :callable
   key_size :int
   plain_size :int
   word_size :int
