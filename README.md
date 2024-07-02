@@ -2,11 +2,11 @@
 
 This repository contains all the material related to the project for the course of <i>GPU Computing</i>:
 <ul>
-  <li>Project: <b>Parallel Evolutionary Algorithm</b>
+  <li>Project: <b>Parallel Differential Distinguisher</b>
   <li>Instructor: <b>Prof. Grossi Giuliano</b>
 </ul>
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MatteoOnger/GPU_Project/blob/main/GPU_PEA.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MatteoOnger/GPU_Project/blob/main/GPU_PDD.ipynb)
 
 This work is licensed under a
 [Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
