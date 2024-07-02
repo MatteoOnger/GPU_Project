@@ -7,8 +7,6 @@ from dataclasses import dataclass
 from types import ModuleType
 from typing import Any
 
-from .constants import Scenarios
-
 
 logger = logging.getLogger(__name__)
 
@@ -50,13 +48,3 @@ class ScoringParmas():
   """
   name :str 
   evaluate :callable
-
-
-@dataclass
-class DistinguisherParams():
-  """
-  """
-  scenario :Scenarios
-  cipher :CipherParams
-  evoalg :EvoalgParmas
-  scoring :ScoringParmas

@@ -10,6 +10,16 @@ from ciphers.utils import common
 
 
 # ---------------------- CONSTANTS -------------------------
+ALLOWED_CONFIG = {
+    "64/96": (np.uint32, 32, 3, 2), 
+}
+"""
+Allowed configurations of the cipher.
+Each configuration is identified by a name and is associated with
+a tuple containing: word type, word size in bit, key size in number of words and
+plaintext size in number of words. 
+"""
+
 WORDSIZE_TO_ALPHABETA = {
     16: (7, 2),
     24: (8, 3),
