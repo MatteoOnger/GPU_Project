@@ -32,25 +32,10 @@ WORDSIZE_TO_ALPHABETA = {
 
 
 # ---------------------- FUNCTIONS -------------------------
-def get_keys_schedule(keys: np.ndarray, number_of_rounds: int, word_size: int) -> np.ndarray:
-    """
-    """
-    number_of_kwords = keys.shape[1]
-    keys_schedule = np.empty((keys.shape[0], number_of_rounds), keys.dtype)
-    keys_schedule[:, 0] = keys[:, number_of_kwords - 1]
-    keys_buffer = keys.copy()
-    for round_number in range(number_of_rounds - 1):
-        encrypt_1round(
-            keys_buffer[:, (number_of_kwords-2):number_of_kwords], round_number, word_size)
-        keys_schedule[:, round_number + 1] = keys_buffer[:, number_of_kwords - 1].copy()
-        temp = keys_buffer[:, number_of_kwords - 2].copy()
-        for i in reversed(range(1, number_of_kwords - 1)):
-            keys_buffer[:, i] = keys_buffer[:, i - 1]
-        keys_buffer[:, 0] = temp
-    return keys_schedule
-
-
-def encrypt_1round(plaintexts: np.ndarray, keys: np.ndarray, word_size: int) -> None:
+def encrypt_function(
+        plaintexts: np.ndarray,
+        keys: np.ndarray,
+        word_size: int) -> None:
     """
     """
     alpha, beta = WORDSIZE_TO_ALPHABETA[word_size]
@@ -60,10 +45,39 @@ def encrypt_1round(plaintexts: np.ndarray, keys: np.ndarray, word_size: int) -> 
     plaintexts[:, 0] ^= keys
     plaintexts[:, 1] = common.rotate_left(beta, plaintexts[:, 1], word_size)
     plaintexts[:, 1] ^= plaintexts[:, 0]
-    return
 
 
-def decrypt_1round(ciphertexts: np.ndarray, keys: np.ndarray, word_size: int) -> None:
+def update_keys(
+        keys: np.ndarray,
+        round_number: int,
+        word_size: int) -> None:
+    """
+    """
+    number_of_kwords = keys.shape[1]
+    encrypt_function(keys[:, (number_of_kwords-2):number_of_kwords], round_number, word_size)
+    temp = keys[:, number_of_kwords - 2].copy()
+    for i in reversed(range(1, number_of_kwords - 1)):
+        keys[:, i] = keys[:, i - 1]
+    keys[:, 0] = temp
+
+
+def encrypt(
+        plaintexts: np.ndarray,
+        keys: np.ndarray,
+        current_round: int,
+        number_of_rounds: int,
+        word_size: int) -> None:
+    """
+    """
+    for round_number in range(current_round, current_round+number_of_rounds):
+        encrypt_function(plaintexts, keys[:, -1], word_size)
+        update_keys(keys, round_number, word_size)
+
+
+def decrypt_function(
+        ciphertexts: np.ndarray,
+        keys: np.ndarray,
+        word_size: int) -> None:
     """
     """
     alpha, beta = WORDSIZE_TO_ALPHABETA[word_size]
@@ -73,22 +87,30 @@ def decrypt_1round(ciphertexts: np.ndarray, keys: np.ndarray, word_size: int) ->
     ciphertexts[:, 0] ^= keys
     ciphertexts[:, 0] = (((1 << word_size) ^ ciphertexts[:, 0]) - ciphertexts[:, 1]) & mask
     ciphertexts[:, 0] = common.rotate_left(alpha, ciphertexts[:, 0], word_size)
-    return
 
 
-def encrypt(plaintexts: np.ndarray, keys: np.ndarray, number_of_rounds: int, word_size: int) -> None:
+def revert_keys(
+        keys: np.ndarray,
+        round_number: int,
+        word_size: int) -> None:
     """
     """
-    keys_schedule = get_keys_schedule(keys, number_of_rounds, word_size)
-    for round_number in range(number_of_rounds):
-        encrypt_1round(plaintexts, keys_schedule[:, round_number], word_size)
-    return
+    number_of_kwords = keys.shape[1]
+    temp = keys[:, 0].copy()
+    for i in range(1, number_of_kwords - 1):
+        keys[:, i - 1] = keys[:, i]
+    keys[:, number_of_kwords - 2] = temp
+    decrypt_function(keys[:, (number_of_kwords-2):number_of_kwords], round_number, word_size)
 
 
-def decrypt(ciphertexts: np.ndarray, keys: np.ndarray, number_of_rounds: int, word_size: int) -> None:
+def decrypt(
+        ciphertexts: np.ndarray,
+        keys: np.ndarray,
+        current_round: int,
+        number_of_rounds: int,
+        word_size: int) -> None:
     """
     """
-    keys_schedule = get_keys_schedule(keys, number_of_rounds, word_size)
-    for round_number in reversed(range(number_of_rounds)):
-        decrypt_1round(ciphertexts, keys_schedule[:, round_number], word_size)
-    return
+    for round_number in reversed(range(current_round-number_of_rounds, current_round)):
+        revert_keys(keys, round_number, word_size)
+        decrypt_function(ciphertexts, keys[:, -1], word_size)
