@@ -3,7 +3,14 @@ Speck Cipher
 
 Implementation from: https://eprint.iacr.org/2013/404.pdf
 """
+# --------------------------------------------------------------------------- #
+# NOTE:
+#  The following functions can be invoked by passing both numpy arrays
+#  and cupy arrays as parameters. In the first case the computation is 
+#  performed by the CPU, in the second case by the GPU.
+# --------------------------------------------------------------------------- #
 
+import cupy as cp
 import numpy as np
 
 from ciphers.utils import common
@@ -19,7 +26,6 @@ Each configuration is identified by a name and is associated with
 a tuple containing: word type, word size in bit, key size in number of words and
 plaintext size in number of words. 
 """
-
 WORDSIZE_TO_ALPHABETA = {
     16: (7, 2),
     24: (8, 3),
@@ -32,10 +38,7 @@ WORDSIZE_TO_ALPHABETA = {
 
 
 # ---------------------- FUNCTIONS -------------------------
-def encrypt_function(
-        plaintexts: np.ndarray,
-        keys: np.ndarray,
-        word_size: int) -> None:
+def encrypt_function(plaintexts: cp.ndarray|np.ndarray, keys: cp.ndarray|np.ndarray, word_size: int) -> None:
     """
     """
     alpha, beta = WORDSIZE_TO_ALPHABETA[word_size]
@@ -47,10 +50,7 @@ def encrypt_function(
     plaintexts[:, 1] ^= plaintexts[:, 0]
 
 
-def update_keys(
-        keys: np.ndarray,
-        round_number: int,
-        word_size: int) -> None:
+def update_keys(keys: cp.ndarray|np.ndarray, round_number: int, word_size: int) -> None:
     """
     """
     number_of_kwords = keys.shape[1]
@@ -61,12 +61,7 @@ def update_keys(
     keys[:, 0] = temp
 
 
-def encrypt(
-        plaintexts: np.ndarray,
-        keys: np.ndarray,
-        current_round: int,
-        number_of_rounds: int,
-        word_size: int) -> None:
+def encrypt(plaintexts: cp.ndarray|np.ndarray, keys: cp.ndarray|np.ndarray, current_round: int, number_of_rounds: int, word_size: int) -> None:
     """
     """
     for round_number in range(current_round, current_round+number_of_rounds):
@@ -74,10 +69,7 @@ def encrypt(
         update_keys(keys, round_number, word_size)
 
 
-def decrypt_function(
-        ciphertexts: np.ndarray,
-        keys: np.ndarray,
-        word_size: int) -> None:
+def decrypt_function(ciphertexts: np.ndarray, keys: np.ndarray, word_size: int) -> None:
     """
     """
     alpha, beta = WORDSIZE_TO_ALPHABETA[word_size]
@@ -89,10 +81,7 @@ def decrypt_function(
     ciphertexts[:, 0] = common.rotate_left(alpha, ciphertexts[:, 0], word_size)
 
 
-def revert_keys(
-        keys: np.ndarray,
-        round_number: int,
-        word_size: int) -> None:
+def revert_keys(keys: cp.ndarray|np.ndarray, round_number: int, word_size: int) -> None:
     """
     """
     number_of_kwords = keys.shape[1]
@@ -103,12 +92,7 @@ def revert_keys(
     decrypt_function(keys[:, (number_of_kwords-2):number_of_kwords], round_number, word_size)
 
 
-def decrypt(
-        ciphertexts: np.ndarray,
-        keys: np.ndarray,
-        current_round: int,
-        number_of_rounds: int,
-        word_size: int) -> None:
+def decrypt(ciphertexts: cp.ndarray|np.ndarray, keys: cp.ndarray|np.ndarray, current_round: int, number_of_rounds: int, word_size: int) -> None:
     """
     """
     for round_number in reversed(range(current_round-number_of_rounds, current_round)):

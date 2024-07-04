@@ -1,7 +1,9 @@
-"""Common utilities for ciphers
+"""
+Common utilities for ciphers
 """
 
 
+# ---------------------- FUNCTIONS -------------------------
 def encrypt_feistel(feistel, texts, keys, word_size):
     feistel(texts, keys, word_size)
     temp = texts[:, 0].copy()
