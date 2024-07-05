@@ -1,4 +1,5 @@
 """
+Common constants.
 """
 
 from enum import Enum
