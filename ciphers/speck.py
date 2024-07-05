@@ -85,7 +85,11 @@ def update_keys(keys: cp.ndarray|np.ndarray, round_number: int, word_size: int) 
     return
 
 
-def encrypt(plaintexts: cp.ndarray|np.ndarray, keys: cp.ndarray|np.ndarray, current_round: int, number_of_rounds: int, word_size: int) -> None:
+def encrypt(plaintexts: cp.ndarray|np.ndarray,
+        keys: cp.ndarray|np.ndarray,
+        current_round: int,
+        number_of_rounds: int, 
+        word_size: int) -> None:
     """
     Encrypt in-place using Speck.
 
@@ -153,7 +157,11 @@ def revert_keys(keys: cp.ndarray|np.ndarray, round_number: int, word_size: int) 
     return
 
 
-def decrypt(ciphertexts: cp.ndarray|np.ndarray, keys: cp.ndarray|np.ndarray, current_round: int, number_of_rounds: int, word_size: int) -> None:
+def decrypt(ciphertexts: cp.ndarray|np.ndarray,
+        keys: cp.ndarray|np.ndarray,
+        current_round: int,
+        number_of_rounds: int,
+        word_size: int) -> None:
     """
     Dencrypt in-place using Speck.
 
