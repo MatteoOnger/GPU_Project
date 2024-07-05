@@ -80,7 +80,7 @@ class EvoalgParams():
 
 
 @dataclass
-class ScoringParams():
+class FitnessParams():
   """
   Dataclass containing parameters related to the chosen fitness function. 
   """
