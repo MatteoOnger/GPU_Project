@@ -58,7 +58,7 @@ class CipherParams():
   """
   Number of bits per word.
   """
-  word_type :int
+  word_type :type
   """
   Numpy or Cupy type of the words.
   """
