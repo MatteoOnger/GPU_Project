@@ -18,7 +18,16 @@ from ciphers.utils import common
 
 # ---------------------- CONSTANTS -------------------------
 ALLOWED_CONFIG = {
-    "64/96": (np.uint32, 32, 3, 2), 
+    "32/64" : (np.uint16, 16, 4, 2),
+    "48/72" : (np.uint32, 24, 3, 2),
+    "48/96" : (np.uint32, 24, 4, 2),
+    "64/96" : (np.uint32, 32, 3, 2),
+    "64/128": (np.uint32, 32, 4, 2),
+    "96/96" : (np.uint64, 48, 2, 2),
+    "96/144": (np.uint64, 48, 3, 2),
+    "128/128":(np.uint64, 64, 2, 2),
+    "128/192":(np.uint64, 64, 3, 2), 
+    "128/256":(np.uint64, 64, 4, 2), 
 }
 """
 Allowed configurations of the cipher.
